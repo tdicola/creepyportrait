@@ -25,6 +25,7 @@
 #   this makefile.  For instance, if you want to make changes based on whether
 #   GTK is installed, one might test that here and create a variable to check. 
 ################################################################################
+PROJECT_ARCH = $(shell uname -m)
 # None
 
 ################################################################################
@@ -61,7 +62,10 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_EXCLUSIONS =
+ifneq ($(PROJECT_ARCH),armv6l)
+	# Exclude the Raspberry Pi camera addon for any platform that isn't the Pi.
+	PROJECT_EXCLUSIONS = $(PROJECT_ROOT)/addons/ofxRPiCameraVideoGrabber%
+endif
 
 ################################################################################
 # PROJECT LINKER FLAGS
@@ -88,7 +92,14 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_DEFINES = 
+ifeq ($(PROJECT_ARCH),armv6l)
+	# Raspberry Pi should only load a few models.  Unfortunately all models will
+	# not fit in memory at the same time.
+	PROJECT_DEFINES = LOAD_SKULL
+else
+	# Other platforms should load all models.
+	PROJECT_DEFINES = LOAD_SKULL LOAD_JACK_EVIL LOAD_JACK_HAPPY
+endif
 
 ################################################################################
 # PROJECT CFLAGS
@@ -105,7 +116,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
- PROJECT_CFLAGS = -std=c++11
+PROJECT_CFLAGS = -std=c++11
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS
@@ -138,5 +149,9 @@
 #		(default) PROJECT_CC = (blank)
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_CXX = 
-# PROJECT_CC = 
+ifeq ($(PROJECT_ARCH),armv6l)
+	# Explicitly use GCC 4.7 on Raspberry Pi.  This is necessary on Raspbian
+	# because the installed GCC version doesn't support C++11.
+	PROJECT_CXX = g++-4.7
+	PROJECT_CC = gcc-4.7
+endif

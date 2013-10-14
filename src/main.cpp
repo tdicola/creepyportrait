@@ -5,6 +5,7 @@
 #include "ofMain.h"
 
 #include "CreepyPortrait.h"
+#include "Model.h"
 #include "VideoSource.h"
 
 using namespace std;
@@ -34,7 +35,7 @@ void printUsage() {
 #ifdef TARGET_RASPBERRY_PI
 
 // Setup default config for Raspberry Pi.
-void configureApp(int videoDeviceId, bool usePiCamera, CreepyPortrait& app) {
+void configureApp(int videoDeviceId, bool usePiCamera, CreepyPortrait* app) {
 	const int videoWidth = 160;
 	const int videoHeight = 120;
 	const int screenWidth = 1024;
@@ -42,27 +43,26 @@ void configureApp(int videoDeviceId, bool usePiCamera, CreepyPortrait& app) {
 
 	ofSetupOpenGL(screenWidth, screenHeight, OF_FULLSCREEN);
 
-	app.displayVideo = true;
-	app.faceBufferSize = 1;
-	app.faceUpdateDelay = 2.0;
-	app.noFaceResetSeconds = 6.0;
-	app.skullFragmentShader = "lighting_es.frag";
-	app.skullVertexShader = "lighting_es.vert";
-	app.useNormalMapping = false;
-	//app.rotateSkull = true;
+	app->displayVideo = true;
+	app->faceBufferSize = 1;
+	app->faceUpdateDelay = 2.0;
+	app->noFaceResetSeconds = 6.0;
+	app->skullFragmentShader = "lighting_es.frag";
+	app->skullVertexShader = "lighting_es.vert";
+	Model::useNormalMapping = false;
 	if (usePiCamera) {
-		app.video = make_shared<PiCameraSource>(videoWidth, videoHeight);
+		app->video = make_shared<PiCameraSource>(videoWidth, videoHeight);
 	}
 	else {
-		app.video = make_shared<VideoGrabberSource>(videoDeviceId, videoWidth, videoHeight);
+		app->video = make_shared<VideoGrabberSource>(videoDeviceId, videoWidth, videoHeight);
 	}
-	app.videoFOV = 60;
+	app->videoFOV = 60;
 }
 
 #else
 
 // Setup default config for other platforms.
-void configureApp(int videoDeviceId, bool usePiCamera, CreepyPortrait& app) {
+void configureApp(int videoDeviceId, bool usePiCamera, CreepyPortrait* app) {
 	const int videoWidth = 320;
 	const int videoHeight = 240;
 	const int screenWidth = 1024;
@@ -76,23 +76,21 @@ void configureApp(int videoDeviceId, bool usePiCamera, CreepyPortrait& app) {
 		printUsage();
 	}
 
-	app.displayVideo = false;
-	app.faceBufferSize = 5;
-	app.faceUpdateDelay = 0.01;
-	//app.faceBufferSize = 1;
-	//app.faceUpdateDelay = 2.0;
-	app.noFaceResetSeconds = 3.0;
+	app->displayVideo = false;
+	app->faceBufferSize = 5;
+	app->faceUpdateDelay = 0.01;
+	app->noFaceResetSeconds = 3.0;
 	if (useNormalMapping) {
-		app.skullFragmentShader = "lighting_gl_bump.frag";
-		app.skullVertexShader = "lighting_gl_bump.vert";
+		app->skullFragmentShader = "lighting_gl_bump.frag";
+		app->skullVertexShader = "lighting_gl_bump.vert";
 	}
 	else {
-		app.skullFragmentShader = "lighting_gl.frag";
-		app.skullVertexShader = "lighting_gl.vert";
+		app->skullFragmentShader = "lighting_gl.frag";
+		app->skullVertexShader = "lighting_gl.vert";
 	}
-	app.useNormalMapping = useNormalMapping;
-	app.video = make_shared<VideoGrabberSource>(videoDeviceId, videoWidth, videoHeight);
-	app.videoFOV = 60; // 73.0 for MS HD life cam
+	Model::useNormalMapping = useNormalMapping;
+	app->video = make_shared<VideoGrabberSource>(videoDeviceId, videoWidth, videoHeight);
+	app->videoFOV = 60; // 73.0 for MS HD life cam
 }
 
 #endif
@@ -125,7 +123,7 @@ int main(int argc, char* argv[]){
 	}
 	// Setup the renderer and application.
 	ofSetCurrentRenderer(ofGLProgrammableRenderer::TYPE);
-	CreepyPortrait app;
+	CreepyPortrait* app = new CreepyPortrait();
 	configureApp(videoDeviceId, usePiCamera, app);
-	ofRunApp(&app);
+	ofRunApp(app);
 }

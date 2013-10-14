@@ -4,7 +4,6 @@ precision highp float;
 
 uniform sampler2D diffuseTex;
 uniform sampler2D specularTex;
-uniform sampler2D ambientTex;
 
 varying vec2 texCoordVarying;
 varying vec3 normalVarying;
@@ -18,7 +17,6 @@ float materialShininess = 0.4;
 
 void main(){
 	vec4 materialDiffuse = texture2D(diffuseTex, texCoordVarying);
-	vec4 materialAmbient = texture2D(ambientTex, texCoordVarying);
 	vec4 materialSpecular = texture2D(specularTex, texCoordVarying);
 
 	float lambert = clamp(dot(normalVarying, lightDirection), 0.0, 1.0);
@@ -30,8 +28,7 @@ void main(){
 	float gaussian = exp(exponent);
 	gaussian = lambert != 0.0 ? gaussian : 0.0;
 
-	gl_FragColor = lightAmbient * materialAmbient +
+	gl_FragColor = lightAmbient +
 				   lightDiffuse * materialDiffuse * lambert +
-				   //lightDiffuse * lambert;
 				   lightSpecular * materialSpecular * gaussian;
 }

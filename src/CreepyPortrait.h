@@ -1,13 +1,14 @@
 #pragma once
 
 #include <iostream>
+#include <list>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "ofMain.h"
-#include "ofxOpenCv.h"
 
+#include "Model.h"
 #include "VideoSource.h"
 #include "VideoFaceDetector.h"
 
@@ -67,12 +68,15 @@ public:
 	// How long to wait for no detected face before the skull rotates back to 0.
 	float 		noFaceResetSeconds;
 
+	// True/false to render the skull (true) or evil jacklantern (false).
+	bool 		renderSkullMode = true;
+
 	// True/false if the skull should just rotate around the Y axis instead of looking
 	// in the direction of detected faces.  Good for testing the shader.
-	bool rotateSkull = false;
+	bool 		rotateSkull = false;
 
 	// Velocity of the rotating skull in degrees/second.
-	float rotateSkullVelocity = 5.0;
+	float 		rotateSkullVelocity = 5.0;
 
 	// Skull rendering fragment and vertex shader files names.
 	std::string	skullFragmentShader;
@@ -96,11 +100,9 @@ public:
 	ofVec2f 	videoOffset = ofVec2f(10,10);
 
 private:
-	void generateTangents(ofMesh& mesh, std::vector<float>& tangents);
 	void updateCurrentRotation();
-	void renderSkull(const ofVec2f& rotation);
-	ofVec2f videoPointToAngle(const ofVec2f& point);
-	ofVec2f videoAngleToHeadAngle(const ofVec2f& angle, float area);
+	ofVec2f cameraPointToAngle(const ofVec2f& point);
+	ofVec2f cameraAngleToModelAngle(const ofVec2f& angle, float area);
 
 	// Internal application state that shouldn't be modified unless you know what you're doing:
 	ofEasyCam camera;
@@ -108,16 +110,10 @@ private:
 	float faceLastSeen = 0.0;
 	float faceLastUpdate = 0.0;
 	float lastUpdate;
-	ofMesh skullMesh1;
-	ofMesh skullMesh2;
-	std::vector<float> skullMesh1Tangents;
-	std::vector<float> skullMesh2Tangents;
-	ofImage skullDiffuse;
-	ofImage skullSpecular;
-	ofImage skullNormal;
-	ofImage skullAmbient;
 	ofImage curtain;
 	ofShader shader;
+	std::list<Model> models;
+	std::list<Model>::iterator currentModel;
 	VideoFaceDetector detector;
 	ofVec2f currentRotation;
 	ofVec2f targetRotation;

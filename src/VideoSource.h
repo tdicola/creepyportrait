@@ -6,6 +6,8 @@
 #include "ofxRPiCameraVideoGrabber.h"
 #endif
 
+// IVideoSource is a simple facade interface to make the video grabber 
+// and Raspberry Pi camera classes look the same.
 class IVideoSource {
 
 public:

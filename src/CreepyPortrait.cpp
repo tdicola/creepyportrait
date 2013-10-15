@@ -2,17 +2,6 @@
 
 using namespace std;
 
-// #include "ofxAssimpModelLoader.h"
-// #include <sstream>
-// void CreepyPortrait::save_model(ofxAssimpModelLoader& model, const string& prefix) {
-// 	cout << "bongos " << model.getMeshCount() << endl;
-// 	for (unsigned int i = 0; i < model.getMeshCount(); ++i) {
-// 		stringstream filename;
-// 		filename << prefix << i << ".ply";
-// 		model.getMesh(i).save(filename.str(), false);
-// 	}
-// }
-
 //--------------------------------------------------------------
 void CreepyPortrait::setup(){
 	ofSetVerticalSync(true);
@@ -249,3 +238,17 @@ void CreepyPortrait::gotMessage(ofMessage msg){
 void CreepyPortrait::dragEvent(ofDragInfo dragInfo){ 
 
 }
+
+// This function is useful for saving a model to a .ply mesh.
+// The Raspberry Pi doesn't support the ofxAssimpModelLoader add on
+// yet so you need to save meshes on your PC and load them on the Pi.
+// #include "ofxAssimpModelLoader.h"
+// #include <sstream>
+// void CreepyPortrait::save_model(ofxAssimpModelLoader& model, const string& prefix) {
+// 	cout << "bongos " << model.getMeshCount() << endl;
+// 	for (unsigned int i = 0; i < model.getMeshCount(); ++i) {
+// 		stringstream filename;
+// 		filename << prefix << i << ".ply";
+// 		model.getMesh(i).save(filename.str(), false);
+// 	}
+// }

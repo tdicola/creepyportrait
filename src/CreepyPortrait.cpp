@@ -23,40 +23,36 @@ void CreepyPortrait::setup(){
 	// Load lighting shader
 	shader.load(skullVertexShader, skullFragmentShader);
 	// Load models
-	// Compile-time conditionals are here to allow making a build
-	// which does not include certain models so the memory requirements
-	// are not as high.  Unfortunately the Raspberry Pi model B can only
-	// use ~2 models at a time.
-	#ifdef LOAD_SKULL
-	models.push_back(Model({"models/skull_mesh_1.ply", "models/skull_mesh_2.ply"},
-							"models/skull_diffuse_1024.jpg",
-							"models/skull_specular_1024.jpg",
-							"models/skull_ao_1024.jpg",
-							"models/skull_normal_1024.jpg",
-							1.0,	// Don't scale the skull.
-							30.0,	// Move the skull up to center.
-							0.0));	// Don't rotate the skull.
-	#endif
-	#ifdef LOAD_JACK_EVIL
-	models.push_back(Model({"models/jack_evil_mesh_1.ply", "models/jack_evil_mesh_2.ply"},
-							"models/jack_evil_diffuse_1024.jpg",
-							"models/jack_evil_specular_1024.jpg",
-							"models/jack_evil_ilumination_1024.jpg",
-							"models/jack_evil_normal_1024.jpg",
-							6.5,		// Scale the pumpkin up in size.
-							-40.0,		// Move the pumpkin down to center.
-							0.0)); 		// Don't rotate the evil pumpkin.
-	#endif
-	#ifdef LOAD_JACK_HAPPY
-	models.push_back(Model({"models/jack_happy_mesh_1.ply", "models/jack_happy_mesh_2.ply"},
-							"models/jack_happy_diffuse_1024.jpg",
-							"models/jack_happy_specular_1024.jpg",
-							"models/jack_happy_ilumination_1024.jpg",
-							"models/jack_happy_normal_1024.jpg",
-							6.5,		// Scale the pumpkin up in size.
-							-40.0,		// Move the pumpkin down to center.
-							-4.0));		// Rotate the happy pumpkin to better face center.
-	#endif
+	if (model == "skull" || model == "all") {
+		models.push_back(Model({"models/skull_mesh_1.ply", "models/skull_mesh_2.ply"},
+								"models/skull_diffuse_1024.jpg",
+								"models/skull_specular_1024.jpg",
+								"models/skull_ao_1024.jpg",
+								"models/skull_normal_1024.jpg",
+								1.0,	// Don't scale the skull.
+								30.0,	// Move the skull up to center.
+								0.0));	// Don't rotate the skull.
+	}
+	if (model == "jackevil" || model == "all") {
+		models.push_back(Model({"models/jack_evil_mesh_1.ply", "models/jack_evil_mesh_2.ply"},
+								"models/jack_evil_diffuse_1024.jpg",
+								"models/jack_evil_specular_1024.jpg",
+								"models/jack_evil_ilumination_1024.jpg",
+								"models/jack_evil_normal_1024.jpg",
+								6.5,		// Scale the pumpkin up in size.
+								-40.0,		// Move the pumpkin down to center.
+								0.0)); 		// Don't rotate the evil pumpkin.
+	}
+	if (model == "jackhappy" || model == "all") {
+		models.push_back(Model({"models/jack_happy_mesh_1.ply", "models/jack_happy_mesh_2.ply"},
+								"models/jack_happy_diffuse_1024.jpg",
+								"models/jack_happy_specular_1024.jpg",
+								"models/jack_happy_ilumination_1024.jpg",
+								"models/jack_happy_normal_1024.jpg",
+								6.5,		// Scale the pumpkin up in size.
+								-40.0,		// Move the pumpkin down to center.
+								-4.0));		// Rotate the happy pumpkin to better face center.
+	}
 	currentModel = begin(models);
 	// Prime the time delta for the first update loop run.
 	lastUpdate = ofGetElapsedTimef();

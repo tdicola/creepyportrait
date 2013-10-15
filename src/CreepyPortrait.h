@@ -65,6 +65,9 @@ public:
 	// Position of the point light source in world coordinates.
 	ofVec4f 	lightPosition = ofVec4f(-600, 100, 600, 1);
 
+	// The model(s) to load for rendering.  Can be one of 'skull', 'jackevil', 'jackhappy', or 'all'.
+	std::string model;
+
 	// How long to wait for no detected face before the skull rotates back to 0.
 	float 		noFaceResetSeconds;
 

@@ -1,5 +1,7 @@
 # Creepy Face Tracking Portrait
 
+See the tutorial for building this project [at the Adafruit learning site](http://learn.adafruit.com/creepy-face-tracking-portrait).
+
 ## License & Acknowledgments
 
 Creepy portrait source code is copyright 2013 Tony DiCola with the following license:

@@ -22,6 +22,8 @@ Creepy portrait source code is copyright 2013 Tony DiCola with the following lic
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 
+Windows port of Creepy Portrait project done by [Rodolfo Lam](https://github.com/rlam1/creepyportrait).
+
 The ofxRPiCameraVideoGrabber source code is copyright Jason Van Cleave and availble at
 [his github repository](https://github.com/jvcleave/ofxRPiCameraVideoGrabber).
 

@@ -149,9 +149,10 @@ PROJECT_CFLAGS = -std=c++11
 #		(default) PROJECT_CC = (blank)
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-ifeq ($(PROJECT_ARCH),armv6l)
-	# Explicitly use GCC 4.7 on Raspberry Pi.  This is necessary on Raspbian
-	# because the installed GCC version doesn't support C++11.
-	PROJECT_CXX = g++-4.7
-	PROJECT_CC = gcc-4.7
-endif
+# 2015 - default GCC is 4.9
+#ifeq ($(PROJECT_ARCH),armv6l)
+#	# Explicitly use GCC 4.7 on Raspberry Pi.  This is necessary on Raspbian
+#	# because the installed GCC version doesn't support C++11.
+#	PROJECT_CXX = g++-4.7
+#	PROJECT_CC = gcc-4.7
+#endif
